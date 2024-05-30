@@ -6,28 +6,32 @@ const ListCategory = () => {
     return(
         <>
             <GiCungDuoc title1="Danh Muc" title2 ="Xem Them"/>
-            <View style = {styles.continar}>
+            <View style = {styles.container}>
                 <View>
-                    <Image source ={require('../../assets/cate1.png')}/>
+                    <Image style={styles.image} source ={require('../../assets/Iphone.png')}/>
                 </View>
                 <View>
-                    <Image source ={require('../../assets/cate1.png')}/>
+                    <Image style={styles.image} source ={require('../../assets/tablet.png')}/>
                 </View>
                 <View>
-                    <Image source ={require('../../assets/cate1.png')}/>
+                    <Image style={styles.image} source ={require('../../assets/Watch.png')}/>
                 </View>
                 <View>
-                    <Image source ={require('../../assets/cate1.png')}/>
+                    <Image style={styles.image} source ={require('../../assets/macbook.png')}/>
                 </View>
             </View>
         </>
     )
 }
 const styles = StyleSheet.create({
-    continar:{
+    container:{
         paddingTop: 10,
         flexDirection : 'row',
-        justifyContent: 'space-between',
+        justifyContent:'space-between'
+    },
+    image:{
+        width:70,
+        height:70
     }
 })
 

@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     container:{
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingVertical: 15,
+        marginTop:10
     },
     title1:{
         color: 'red',

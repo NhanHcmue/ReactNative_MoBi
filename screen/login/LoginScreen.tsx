@@ -1,7 +1,15 @@
 import React from "react";
 import { View, Text, StyleSheet, StatusBar, TextInput, TouchableOpacity, Alert, Touchable, Image} from "react-native";
 import Fontisto from '@expo/vector-icons/Fontisto';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+
 const LoginScreen = () => {
+    const navigation=useNavigation();
+    const handleNext=()=>{
+        navigation.navigate("Home");
+    }
     return(
         <View style = {styles.container}>
             <StatusBar></StatusBar>
@@ -26,7 +34,7 @@ const LoginScreen = () => {
                 </View>
             </View>
             <View>
-                <TouchableOpacity style = {{paddingHorizontal: 25}} onPress={() => Alert.alert("ditconme")}><Text style = {styles.conphom}>Dang Nhap</Text></TouchableOpacity>
+                <TouchableOpacity style = {{paddingHorizontal: 25}} onPress={handleNext}><Text style = {styles.conphom}>Dang Nhap</Text></TouchableOpacity>
             </View>
         </View>
     )

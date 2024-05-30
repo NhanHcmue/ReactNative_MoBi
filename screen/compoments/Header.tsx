@@ -1,30 +1,49 @@
 import React from "react"
-import { Image,StyleSheet, View, Text } from "react-native";
+import { Image,StyleSheet, View, Text, TextInput } from "react-native";
 
-const Header = () => {
+const Header= ({search,setSearch}) => {
     return (
         <View style= {styles.container}> 
             <View>
-                <Text style = {styles.title}>MosofsVn</Text>
+            <TextInput
+                    style={styles.textinput}
+                    placeholder="Nhập từ khóa tìm kiếm"
+                    value={search}
+                    onChangeText={(text) => setSearch(text)}
+                />
             </View>
             <View>
-                <Image source={require('../../assets/logo.png')}/>
+                <Image style={styles.image} source={require('../../assets/cart.png')}/>
             </View>
         </View>
     )
 }
 const styles = StyleSheet.create({
     container:{
-        paddingTop: 30,
         flexDirection: 'row',
-        justifyContent: 'space-between',
         alignItems: 'center',
+        backgroundColor:'pink',
+        height:80,
     },
     title: {
         color : '#FF0000',
         fontSize: 14,
         fontWeight: '700',
         textTransform: 'uppercase',
+    },
+    textinput:{
+        borderWidth:1,
+        width:300,
+        height:50,
+        marginLeft:5,
+        borderRadius:10,
+        backgroundColor:'white',
+        paddingLeft:5
+    },
+    image:{
+        width:40,
+        height:40,
+        marginLeft:40
     }
 })
 
