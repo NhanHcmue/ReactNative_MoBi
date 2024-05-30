@@ -63,7 +63,8 @@ const ListProduct = ({search,setSearch}) => {
 }
 const styles = StyleSheet.create({
     container:{
-       flex:1
+       flex:1,
+       paddingHorizontal: 10,
     },
     item:{
         width: '45%'

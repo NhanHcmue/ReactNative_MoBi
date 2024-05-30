@@ -20,7 +20,7 @@ const LoginScreen = () => {
                 <Text style = {{fontSize: 20}}>By singing in you are agreeing</Text>
                 <View style = {{ flexDirection: 'row', alignContent: 'center'}}>
                     <Text style = {{fontSize: 20}}>our </Text>
-                    <TouchableOpacity onPress={() => Alert.alert("ditconme")}><Text style = {{fontSize: 20, color: '#00feff'}}>Term and privacy policy</Text></TouchableOpacity>
+                    <TouchableOpacity><Text style = {{fontSize: 20, color: '#00feff'}}>Term and privacy policy</Text></TouchableOpacity>
                 </View>
             </View>
             <View style = {styles.form}>

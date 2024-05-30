@@ -27,11 +27,17 @@ const styles = StyleSheet.create({
     container:{
         paddingTop: 10,
         flexDirection : 'row',
-        justifyContent:'space-between'
+        justifyContent:'space-between',
+        paddingHorizontal: 10,
     },
     image:{
-        width:70,
-        height:70
+        width:80,
+        height:80,
+        borderWidth: 1,
+        borderColor: 'black',
+        borderRadius: 10,
+        padding: 10,
+        
     }
 })
 

@@ -22,7 +22,8 @@ const styles = StyleSheet.create({
     container:{
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginTop:10
+        marginTop:10,
+        paddingHorizontal: 10,
     },
     title1:{
         color: 'red',

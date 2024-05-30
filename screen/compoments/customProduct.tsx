@@ -19,11 +19,13 @@ const Product:React.FC<movieProps> = ({name,image,onPress}) => {
 const styles = StyleSheet.create({
   container:{
       flexDirection:'row',
-      borderWidth:0,
+      borderWidth:1,
       justifyContent:'flex-start',
       alignItems:'center',
-      height:200,
-      padding: 10
+      height:170,
+      borderRadius: 10,
+      padding: 10,
+      margin:10,
   },
   imagePoster:{
       height: 100,
