@@ -56,6 +56,7 @@ const Details=() => {
   const checkinputNumber=()=>{
       if(number > 0){
         setError('');
+        navigation.navigate('Cart');
       } else {
         setError('Please input a valid number');
       }
@@ -103,7 +104,7 @@ const Details=() => {
                       keyboardType='numeric'
                       onChangeText={(text)=>setNumber(parseInt(text))}/>
           {error ? <Text style={styles.error}>{error}</Text> : null}
-          <Button text={'Order'} height={50} width={80} color={'red'} onPress={checkinputNumber}/>
+          <Button text={'Add to cart'} height={50} width={100} color={'red'} onPress={checkinputNumber}/>
         </View>
       </View>
     </View>

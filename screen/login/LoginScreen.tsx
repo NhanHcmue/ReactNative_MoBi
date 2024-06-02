@@ -8,7 +8,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 const LoginScreen = () => {
     const navigation=useNavigation();
     const handleNext=()=>{
-        navigation.navigate("Home");
+        navigation.navigate("Main");
     }
     return(
         <View style = {styles.container}>
