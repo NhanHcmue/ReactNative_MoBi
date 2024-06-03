@@ -27,7 +27,7 @@ const styles=StyleSheet.create({
         borderColor:'white'
     },
     text:{
-        color:'white',
+        color:'black',
         fontSize:15,
         fontWeight:'bold'
     }

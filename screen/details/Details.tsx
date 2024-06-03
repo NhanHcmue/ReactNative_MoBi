@@ -104,7 +104,7 @@ const Details=() => {
                       keyboardType='numeric'
                       onChangeText={(text)=>setNumber(parseInt(text))}/>
           {error ? <Text style={styles.error}>{error}</Text> : null}
-          <Button text={'Add to cart'} height={50} width={100} color={'red'} onPress={checkinputNumber}/>
+          <Button text={'Add to cart'} height={50} width={100} color={'#c3e703'} onPress={checkinputNumber}/>
         </View>
       </View>
     </View>
@@ -114,14 +114,17 @@ const Details=() => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor:'ligthgray'
   },
   top: {
     flex: 0.7,
-    backgroundColor: 'lightcoral',
-    flexDirection: 'row'
+    backgroundColor: 'white',
+    flexDirection: 'row',
+    borderBottomStartRadius:30,
+    borderBottomEndRadius:30
   },
   textTop: {
-    color: 'white',
+    color: 'black',
     fontSize: 40,
     fontWeight: 'bold',
     marginLeft: 10,
@@ -141,6 +144,9 @@ const styles = StyleSheet.create({
     flex: 4,
     backgroundColor: 'white',
     flexDirection: 'row',
+    marginTop:10,
+    borderTopStartRadius:30,
+    borderTopEndRadius:30
   },
   containImage: {
     flex: 2,
