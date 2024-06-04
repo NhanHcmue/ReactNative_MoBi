@@ -12,7 +12,7 @@ const Cart = () => {
     <View style={styles.container}>
         <View style={styles.top}>
             <Text style={styles.textTop}>Cart</Text>
-             <Button text='102 Chien Thang, 9th ward, Phu Nhuan district' width={380} height={60} color='#D1D8C5' onPress={handleswitchDelivery}/>
+             <Button text='102 Chien Thang, 9th ward, Phu Nhuan district' width={200} height={60} color='#D1D8C5' onPress={handleswitchDelivery}/>
         </View>
         <View style={styles.body}></View>
         <View style={styles.bottom}>
@@ -32,11 +32,15 @@ const styles=StyleSheet.create({
       padding:15,
       backgroundColor:'white',
       borderBottomStartRadius:30,
-      borderBottomEndRadius:30
+      borderBottomEndRadius:30,
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+      alignItems: 'center'
    },
    textTop:{
     fontWeight:'bold',
     fontSize:30,
+    flexWrap: 'wrap',
    },
    address:{
       borderWidth:1
