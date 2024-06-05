@@ -1,11 +1,11 @@
 import { Button, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
-type movieProps={
+type laptopProps={
     name:string,
     image:string,
     onPress?:()=>void;
 }
-const Product:React.FC<movieProps> = ({name,image,onPress}) => {
+const Product:React.FC<laptopProps> = ({name,image,onPress}) => {
   return (
     <View style={styles.container}>
        <Image style={styles.imagePoster} source={{uri:image}}/>

@@ -7,12 +7,15 @@ import Details from "./screen/details/Details";
 import Cart from "./screen/payment/Cart";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import StackNavigator from "./Navigation/stackNavigation";
+import { CartProvider } from "./Context/cartContext";
 
 const App = () => {
   return (
-    <NavigationContainer>
-      <StackNavigator />
-    </NavigationContainer>
+  <CartProvider>
+      <NavigationContainer>
+        <StackNavigator />
+      </NavigationContainer>
+  </CartProvider>
   );
 };
 

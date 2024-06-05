@@ -1,7 +1,12 @@
+import { useNavigation } from "@react-navigation/native";
 import React from "react"
-import { Image,StyleSheet, View, Text, TextInput } from "react-native";
+import { Image,StyleSheet, View, Text, TextInput, TouchableOpacity } from "react-native";
 
 const Header= ({search,setSearch}) => {
+    const navigation=useNavigation();
+    const handleNext=()=>{
+        navigation.navigate("Cart");
+    }
     return (
         <View style= {styles.container}> 
             <View style = {styles.viewtext}>
@@ -13,7 +18,7 @@ const Header= ({search,setSearch}) => {
                     />
             </View>
             <View>
-                <Image style={styles.image} source={require('../../assets/cart.png')}/>
+                <TouchableOpacity onPress={handleNext}><Image style={styles.image} source={require('../../assets/cart.png')}/></TouchableOpacity>
             </View>
         </View>
     )

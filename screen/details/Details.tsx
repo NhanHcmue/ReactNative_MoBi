@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, ActivityIndicator, TextInput } from 'react-native';
 import Button from '../compoments/customButton';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
+import { CartContext } from '../../Context/cartContext';
 import { baseUrl } from '../home/constraint';
 
 type RootStackParamList = {
@@ -10,21 +11,31 @@ type RootStackParamList = {
 
 type DetailsScreenRouteProp = RouteProp<RootStackParamList, 'Details'>;
 
-const Details=() => {
+interface Product {
+  id: string;
+  title: string;
+  price: string;
+  imageUrl: string;
+  source: string;
+}
+
+const Details: React.FC = () => {
   const navigation = useNavigation();
   const route = useRoute<DetailsScreenRouteProp>();
   const { productID } = route.params;
-  const [product, setProduct] = useState(null);
+  const { addToCart } = useContext(CartContext);
+  const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
-  const [number,setNumber]=useState(0);
-  const [error,setError]=useState('');
+  const [number, setNumber] = useState(0);
+  const [error, setError] = useState('');
+
   const loadData = async () => {
     setLoading(true);
     const url = `${baseUrl}/Products?productId=${productID}`;
     const options = {
       method: "GET",
-      headers: { 
-        'X-API-KEY': 'b5e56cb0c628ad72dd7ad36e2eb099b62d298a1d', 
+      headers: {
+        'X-API-KEY': 'b5e56cb0c628ad72dd7ad36e2eb099b62d298a1d',
         'Content-Type': 'application/json'
       }
     };
@@ -33,9 +44,9 @@ const Details=() => {
       if (!response.ok) {
         throw new Error(`Error: ${response.status}`);
       }
-      const data = await response.json();
+      const data: Product[] = await response.json();
       if (Array.isArray(data) && data.length > 0) {
-        setProduct(data[0]); 
+        setProduct(data[0]);
       } else {
         setProduct(null);
       }
@@ -53,14 +64,18 @@ const Details=() => {
   const handleBack = () => {
     navigation.navigate('Home');
   };
-  const checkinputNumber=()=>{
-      if(number > 0){
-        setError('');
-        navigation.navigate('Cart');
-      } else {
-        setError('Please input a valid number');
+
+  const checkInputNumber = (number: number) => {
+    if (number > 0) {
+      setError('');
+      if (product) {
+        addToCart({ ...product, count:number });
       }
-  }
+      navigation.navigate('Cart');
+    } else {
+      setError('Please input a valid number');
+    }
+  };
 
   if (loading) {
     return (
@@ -79,32 +94,33 @@ const Details=() => {
   }
 
   return (
-  
     <View style={styles.container}>
       <View style={styles.top}>
         <Text style={styles.textTop}>HCMUE SHOP</Text>
         <View style={styles.containerInput}>
-           <TouchableOpacity>
-            <Image style={styles.iconCart} source={require('../../assets/cart.png')}/>
+          <TouchableOpacity>
+            <Image style={styles.iconCart} source={require('../../assets/cart.png')} />
           </TouchableOpacity>
           <TouchableOpacity onPress={handleBack}>
-            <Image style={styles.iconCart} source={require('../../assets/iconNext.png')}/>
+            <Image style={styles.iconCart} source={require('../../assets/iconNext.png')} />
           </TouchableOpacity>
         </View>
       </View>
       <View style={styles.body}>
         <View style={styles.containImage}>
-          <Image style={styles.imageProduct} source={{uri:product.imageUrl}}/>
+          <Image style={styles.imageProduct} source={{ uri: product.imageUrl }} />
         </View>
         <View style={styles.textProduct}>
           <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 20 }}>{product.title}</Text>
           <Text style={{ color: 'red', fontSize: 15, fontWeight: 'bold' }}>{product.price}</Text>
           <Text style={{ color: 'black', fontSize: 15, marginTop: 5 }}>{product.source}</Text>
-           <TextInput placeholder='input number' 
-                      keyboardType='numeric'
-                      onChangeText={(text)=>setNumber(parseInt(text))}/>
+          <TextInput
+            placeholder='input number'
+            keyboardType='numeric'
+            onChangeText={(text) => setNumber(parseInt(text))}
+          />
           {error ? <Text style={styles.error}>{error}</Text> : null}
-          <Button text={'Add to cart'} height={50} width={100} color={'#c3e703'} onPress={checkinputNumber}/>
+          <Button text={'Add to cart'} height={50} width={100} color={'#c3e703'} onPress={() => checkInputNumber(number)} />
         </View>
       </View>
     </View>
@@ -114,14 +130,14 @@ const Details=() => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor:'ligthgray'
+    backgroundColor: 'lightgray'
   },
   top: {
     flex: 0.7,
     backgroundColor: 'white',
     flexDirection: 'row',
-    borderBottomStartRadius:30,
-    borderBottomEndRadius:30
+    borderBottomStartRadius: 30,
+    borderBottomEndRadius: 30
   },
   textTop: {
     color: 'black',
@@ -144,9 +160,9 @@ const styles = StyleSheet.create({
     flex: 4,
     backgroundColor: 'white',
     flexDirection: 'row',
-    marginTop:10,
-    borderTopStartRadius:30,
-    borderTopEndRadius:30
+    marginTop: 10,
+    borderTopStartRadius: 30,
+    borderTopEndRadius: 30
   },
   containImage: {
     flex: 2,
@@ -161,10 +177,10 @@ const styles = StyleSheet.create({
     flex: 2,
     marginTop: 100,
   },
-  error:{
+  error: {
     color: 'red',
     marginTop: 5,
-    fontWeight:'bold'
+    fontWeight: 'bold'
   },
   loaderContainer: {
     flex: 1,
