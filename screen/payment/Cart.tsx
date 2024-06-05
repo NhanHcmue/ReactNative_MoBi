@@ -81,10 +81,7 @@ const styles = StyleSheet.create({
     padding: 15,
     backgroundColor: 'white',
     borderBottomStartRadius: 30,
-    borderBottomEndRadius: 30,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center'
+    borderBottomEndRadius: 30
   },
   textTop: {
     fontWeight: 'bold',
