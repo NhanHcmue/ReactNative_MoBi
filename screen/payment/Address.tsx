@@ -1,4 +1,5 @@
 import { View, Text, StyleSheet, TextInput } from 'react-native'
+import { View, Text, StyleSheet, TextInput } from 'react-native'
 import React, { useState } from 'react'
 import Input from '../compoments/customTextinput'
 import Button from '../compoments/customButton'
@@ -64,6 +65,19 @@ const styles=StyleSheet.create({
       padding: 10,
       fontSize: 17,
   },
+  form: {
+    paddingTop: 30,
+  },
+  group: {
+    padding : 10,
+  },
+  ip: {
+      borderColor: 'gray',
+      borderWidth: 1,
+      borderRadius: 10,
+      padding: 10,
+      fontSize: 17,
+  },
   top:{
     justifyContent:'center',
     alignItems:'center'
@@ -74,8 +88,11 @@ const styles=StyleSheet.create({
   },
   body:{
     paddingHorizontal: 10
+    paddingHorizontal: 10
   },
   button:{
+    marginTop:10,
+    alignItems: 'center'
     marginTop:10,
     alignItems: 'center'
   }
