@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TextInput } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Input from '../compoments/customTextinput'
 import Button from '../compoments/customButton'
 import { useNavigation } from '@react-navigation/native'
@@ -9,6 +9,21 @@ const Address = () => {
     const [name,setName]=useState('');
     const [phone,setPhone]=useState('');
     const [address,setAddress]=useState('');
+    // set InitialValue for ID
+    useEffect(() => {
+      const initializeOrderId = async () => {
+          try {
+              const orderId = await AsyncStorage.getItem('orderId');
+              if (!orderId) {
+                  await AsyncStorage.setItem('orderId', '1');
+              }
+          } catch (error) {
+              console.error('Failed to initialize orderId', error);
+          }
+      };
+
+      initializeOrderId();
+  }, []);
     const saveInformation = async () => {
       try {
         const userInfo = { name, phone, address };

@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Alert } from 'react-native';
 import Button from '../compoments/customButton';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CartProduct from '../compoments/customCart';
 import { CartContext } from '../../Context/cartContext';
+import { baseUrl } from '../home/constraint';
 type User={
   name:string,
   phone:string,
@@ -18,6 +19,44 @@ const Cart: React.FC = () => {
   const handleSwitchDelivery = () => {
     navigation.navigate('Address');
   };
+  const checkoutAPI=async()=>{
+    try {
+      const currentId = await AsyncStorage.getItem('orderId');
+      let newId = 1;
+      if (currentId) {
+        newId = parseInt(currentId, 10) + 1;
+      }
+
+      const url = `${baseUrl}/Carts`;
+      const totalAmount = calculateTotal();
+      const products = cart.map(item => ({ productId: item.productId, count: item.count }));
+      const orderData = {
+        Name: user.name,
+        Address: user.address,
+        Products: products,
+        Total: totalAmount,
+        id: newId
+      };
+
+      const options = {
+        method: "POST",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify(orderData)
+      };
+
+      const response = await fetch(url, options);
+      const result = await response.json();
+      if (result) {
+        await AsyncStorage.setItem('orderId', newId.toString());
+        navigation.navigate('Confirm', { total: formattedTotal });
+      } else {
+        Alert.alert('Failed');
+      }
+    } catch (error) {
+      console.warn(error);
+    }
+     
+  }
   // get user's data from asyncStorage
   // install npm install @react-native-async-storage/async-storage before use
   useEffect(()=>{
@@ -36,6 +75,8 @@ const Cart: React.FC = () => {
   const calculateTotal=()=>{
     return cart.reduce((total,item)=>total+(item.price*item.count),0);
   }
+  const formattedTotal = Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(calculateTotal());
+
   return (
     <View style={styles.container}>
       <View style={styles.top}>
@@ -64,9 +105,11 @@ const Cart: React.FC = () => {
         />
       </View>
       <View style={styles.bottom}>
-        <Text style={styles.textPrice}>Total: {Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(calculateTotal())}</Text>
-        <Button text='Checkout' width={250} height={50} color={'#c3e703'} />
-      </View>
+        <Text style={styles.textPrice}>Total: {formattedTotal}</Text>
+        {cart.length > 0 && (
+          <Button text='Checkout' width={250} height={50} color={'#c3e703'} onPress={checkoutAPI} />
+        )}
+       </View>
     </View>
   );
 };
@@ -85,8 +128,7 @@ const styles = StyleSheet.create({
   },
   textTop: {
     fontWeight: 'bold',
-    fontSize: 30,
-    flexWrap: 'wrap',
+    fontSize: 30
   },
   address:{
     borderWidth:1
