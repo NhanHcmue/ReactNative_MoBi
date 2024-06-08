@@ -4,33 +4,27 @@ import GiCungDuoc from "../compoments/GiCungDuoc";
 import { useNavigation } from "@react-navigation/native";
 import { baseUrl } from "./constraint";
 import Product from "../compoments/customProduct";
-
+import { child, get, getDatabase, ref } from "firebase/database";
+import { firebaseapp } from "../../Database/Firebase";
 const ListProduct = ({ search }) => {
   const navigation = useNavigation();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
-
+// tải dữ liệu từ firebase
   const loadData = async () => {
     setLoading(true);
-    const url = `${baseUrl}/Products`;
-    const options = {
-      method: "GET",
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    };
+    const dbRef = ref(getDatabase(firebaseapp));
     try {
-      const response = await fetch(url, options);
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status}`);
+      const snapshot = await get(child(dbRef, 'products'));
+      if (snapshot.exists()) {
+        setData(snapshot.val());
+      } else {
+        console.warn("No data available");
       }
-      const data = await response.json();
-      setData(data);
-      setLoading(false);
     } catch (error) {
       console.error(error);
-      setLoading(false);
     }
+    setLoading(false);
   };
 
   useEffect(() => {

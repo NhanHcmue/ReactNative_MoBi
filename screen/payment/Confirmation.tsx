@@ -11,13 +11,14 @@ type User={
   phone:string,
   address:string
 }
-type ConfirmScreenRouteProp = RouteProp<{ params: { total: string } }, 'params'>;
+type ConfirmScreenRouteProp = RouteProp<{ params: { total: string; products: object } }, 'params'>;
 const Confirmation: React.FC = () => {
   const navigation = useNavigation();
   const [user,setUser]=useState<User|null>(null);
   const route=useRoute<ConfirmScreenRouteProp>();
   const {clearCart}=useContext(CartContext);
   const {total}=route.params;
+  const {products}=route.params;
   useEffect(()=>{
     const getUser= async()=>{
       try{
@@ -54,6 +55,16 @@ const Confirmation: React.FC = () => {
           <Text style={styles.informText}>Name: {user ? user.name:" set Name"}</Text>
           <Text style={styles.informText}>Address: {user ? user.address:" set Address"}</Text>
           <Text style={styles.informText}>Phone: {user ? user.phone:" set Phone"}</Text>
+           <Text style={styles.informText}>Products:</Text>
+          <FlatList
+            data={products}
+            keyExtractor={(item) => item.productId}
+            renderItem={({ item }) => (
+              <Text style={styles.informText}>
+                {item.title}: {item.count} x {item.price}
+              </Text>
+            )}
+          />
           <Text style={styles.informText}>Total:{total}</Text>
         </View>
       </View>

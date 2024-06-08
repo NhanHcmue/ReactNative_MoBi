@@ -1,8 +1,13 @@
 import React from "react";
 import {View,Image, Text, StyleSheet} from "react-native";
 import GiCungDuoc from "../compoments/GiCungDuoc";
+import { useNavigation } from "@react-navigation/native";
 
 const ListCategory = () => {
+    const navigation=useNavigation();
+    const handleNextProduct=()=>{
+
+    }
     return(
         <>
             <GiCungDuoc title1="Danh Muc" title2 ="Xem Them"/>

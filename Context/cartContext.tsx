@@ -26,7 +26,14 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [cart, setCart] = useState<Product[]>([]);
 
   const addToCart = (product: Product) => {
-    setCart([...cart, product]);
+    const existingItemIndex = cart.findIndex(item => item.productId === product.productId);
+    if (existingItemIndex !== -1) {
+      const updatedCart = [...cart];
+      updatedCart[existingItemIndex].count += product.count;
+      setCart(updatedCart);
+    } else {
+      setCart([...cart, product]);
+    }
   };
   const removeFromCart = (productId: string) => {
     setCart(cart.filter(product => product.productId !== productId));

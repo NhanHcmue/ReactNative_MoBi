@@ -6,6 +6,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import CartProduct from '../compoments/customCart';
 import { CartContext } from '../../Context/cartContext';
 import { baseUrl } from '../home/constraint';
+import { get, ref, set, update } from 'firebase/database';
+import { database, firebaseapp } from '../../Database/Firebase';
 
 type User = {
   name: string,
@@ -21,16 +23,16 @@ const Cart: React.FC = () => {
   const handleSwitchDelivery = () => {
     navigation.navigate('Address');
   };
-
   const checkoutAPI = async () => {
     try {
-      const currentId = await AsyncStorage.getItem('orderId');
+      const dbRef = ref(database, 'orderId');
+      const snapshot = await get(dbRef);
       let newId = 1;
-      if (currentId) {
-        newId = parseInt(currentId, 10) + 1;
+      if (snapshot.exists()) {
+        newId = snapshot.val() + 1;
       }
 
-      const url = `${baseUrl}/Carts`;
+      const ordersRef = ref(database, `Carts/${newId}`);
       const totalAmount = calculateTotal();
       const products = cart.map(item => ({ productId: item.productId, count: item.count }));
       const orderData = {
@@ -41,25 +43,15 @@ const Cart: React.FC = () => {
         id: newId
       };
 
-      const options = {
-        method: "POST",
-        headers: { "Content-type": "application/json" },
-        body: JSON.stringify(orderData)
-      };
+      await set(ordersRef, orderData);
+      await update(dbRef, { 'id': newId });
 
-      const response = await fetch(url, options);
-      const result = await response.json();
-      if (result) {
-        await AsyncStorage.setItem('orderId', newId.toString());
-        navigation.navigate('Confirm', { total: formattedTotal });
-      } else {
-        Alert.alert('Failed');
-      }
+      navigation.navigate('Confirm', { total: formattedTotal, products: cart });
     } catch (error) {
       console.warn(error);
+      Alert.alert('Failed');
     }
   };
-
   // get user's data from asyncStorage
   useEffect(() => {
     const getUser = async () => {
@@ -74,7 +66,7 @@ const Cart: React.FC = () => {
     };
     getUser();
   }, []);
-
+  
   const calculateTotal = () => {
     return cart.reduce((total, item) => total + (item.price * item.count), 0);
   };
@@ -96,7 +88,7 @@ const Cart: React.FC = () => {
       <View style={styles.body}>
         <FlatList
           data={cart}
-          keyExtractor={(item) => item.productId}
+          keyExtractor={(item, index) => `${item.productId}_${index}`}
           renderItem={({ item }) => (
             <CartProduct
               name={item.title}
@@ -125,7 +117,9 @@ const styles = StyleSheet.create({
   },
   top: {
     flex: 1,
-    padding: 15,
+    paddingLeft:22,
+    paddingTop:10,
+    paddingBottom:10,
     backgroundColor: 'white',
     borderBottomStartRadius: 30,
     borderBottomEndRadius: 30
@@ -138,7 +132,7 @@ const styles = StyleSheet.create({
     borderWidth: 1
   },
   body: {
-    flex: 5,
+    flex: 4,
     backgroundColor: 'white',
     marginTop: 10,
     borderTopStartRadius: 30,
@@ -153,7 +147,7 @@ const styles = StyleSheet.create({
   textPrice: {
     fontWeight: 'bold',
     color: 'red',
-    fontSize: 20
+    fontSize: 16
   }
 });
 

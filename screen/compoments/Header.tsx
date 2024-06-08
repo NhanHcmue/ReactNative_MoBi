@@ -18,7 +18,7 @@ const Header= ({search,setSearch}) => {
                     />
             </View>
             <View>
-                <TouchableOpacity onPress={handleNext}><Image style={styles.image} source={require('../../assets/cart.png')}/></TouchableOpacity>
+                <TouchableOpacity onPress={handleNext}><Image style={styles.image} source={require('../../assets/account.png')}/></TouchableOpacity>
             </View>
         </View>
     )
@@ -28,8 +28,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
-        backgroundColor:'pink',
+        backgroundColor:'white',
         height:80,
+       
     },
     textinput:{
         borderWidth:1,

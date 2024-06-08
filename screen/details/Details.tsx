@@ -4,6 +4,8 @@ import Button from '../compoments/customButton';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { CartContext } from '../../Context/cartContext';
 import { baseUrl } from '../home/constraint';
+import { child, get, ref } from 'firebase/database';
+import { database } from '../../Database/Firebase';
 
 type RootStackParamList = {
   Details: { productID: string };
@@ -23,43 +25,36 @@ const Details: React.FC = () => {
   const navigation = useNavigation();
   const route = useRoute<DetailsScreenRouteProp>();
   const { productID } = route.params;
-  const { addToCart } = useContext(CartContext);
+  const { addToCart, cart } = useContext(CartContext);
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [number, setNumber] = useState(0);
   const [error, setError] = useState('');
-
   const loadData = async () => {
     setLoading(true);
-    const url = `${baseUrl}/Products?productId=${productID}`;
-    const options = {
-      method: "GET",
-      headers: {
-        'X-API-KEY': 'b5e56cb0c628ad72dd7ad36e2eb099b62d298a1d',
-        'Content-Type': 'application/json'
-      }
-    };
+    const dbRef = ref(database);
     try {
-      const response = await fetch(url, options);
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status}`);
-      }
-      const data: Product[] = await response.json();
-      if (Array.isArray(data) && data.length > 0) {
-        setProduct(data[0]);
+      const snapshot = await get(child(dbRef, `products`));
+      if (snapshot.exists()) {
+        const productsArray = snapshot.val();
+        const foundProduct = productsArray.find((item: any) => item.productId === productID);
+        if (foundProduct) {
+          setProduct(foundProduct);
+        } else {
+          console.log("Product not found");
+        }
       } else {
-        setProduct(null);
+        console.log("No data available");
       }
-      setLoading(false);
     } catch (error) {
-      console.error(error);
-      setLoading(false);
+      console.error("Error fetching data: ", error);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
     loadData();
-  }, []);
+  }, [productID]);
 
   const handleBack = () => {
     navigation.navigate('Home');
@@ -68,9 +63,7 @@ const Details: React.FC = () => {
   const checkInputNumber = (number: number) => {
     if (number > 0) {
       setError('');
-      if (product) {
-        addToCart({ ...product, count:number });
-      }
+      addToCart({...product, count: number });
       navigation.navigate('Cart');
     } else {
       setError('Please input a valid number');
