@@ -1,25 +1,28 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, Alert } from 'react-native';
 import Button from '../compoments/customButton';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CartProduct from '../compoments/customCart';
 import { CartContext } from '../../Context/cartContext';
 import { baseUrl } from '../home/constraint';
-type User={
-  name:string,
-  phone:string,
-  address:string
-}
+
+type User = {
+  name: string,
+  phone: string,
+  address: string
+};
+
 const Cart: React.FC = () => {
   const navigation = useNavigation();
-  const [user,setUser]=useState<User|null>(null);
-  const { cart,removeFromCart } = useContext(CartContext);
+  const [user, setUser] = useState<User | null>(null);
+  const { cart, removeFromCart } = useContext(CartContext);
 
   const handleSwitchDelivery = () => {
     navigation.navigate('Address');
   };
-  const checkoutAPI=async()=>{
+
+  const checkoutAPI = async () => {
     try {
       const currentId = await AsyncStorage.getItem('orderId');
       let newId = 1;
@@ -31,8 +34,8 @@ const Cart: React.FC = () => {
       const totalAmount = calculateTotal();
       const products = cart.map(item => ({ productId: item.productId, count: item.count }));
       const orderData = {
-        Name: user.name,
-        Address: user.address,
+        Name: user?.name,
+        Address: user?.address,
         Products: products,
         Total: totalAmount,
         id: newId
@@ -55,40 +58,41 @@ const Cart: React.FC = () => {
     } catch (error) {
       console.warn(error);
     }
-     
-  }
+  };
+
   // get user's data from asyncStorage
-  // install npm install @react-native-async-storage/async-storage before use
-  useEffect(()=>{
-    const getUser= async()=>{
-      try{
-        const userInfo=await AsyncStorage.getItem('user');
-         if(userInfo){
-            setUser(JSON.parse(userInfo));
-         }
-      }catch(e){
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+        const userInfo = await AsyncStorage.getItem('user');
+        if (userInfo) {
+          setUser(JSON.parse(userInfo));
+        }
+      } catch (e) {
         console.warn(e);
       }
     };
     getUser();
-  },[])
-  const calculateTotal=()=>{
-    return cart.reduce((total,item)=>total+(item.price*item.count),0);
-  }
+  }, []);
+
+  const calculateTotal = () => {
+    return cart.reduce((total, item) => total + (item.price * item.count), 0);
+  };
+
   const formattedTotal = Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(calculateTotal());
 
   return (
     <View style={styles.container}>
       <View style={styles.top}>
-        <Text style={styles.textTop}>Cart</Text> 
+        <Text style={styles.textTop}>Cart</Text>
         <Button
           text={user ? user.address : 'set your Address'}
           width={380}
           height={60}
           color='#D1D8C5'
           onPress={handleSwitchDelivery}
-        />       
-     </View>
+        />
+      </View>
       <View style={styles.body}>
         <FlatList
           data={cart}
@@ -99,7 +103,7 @@ const Cart: React.FC = () => {
               price={item.price}
               image={item.imageUrl}
               count={item.count}
-              onPress={()=>removeFromCart(item.productId)}
+              onPress={() => removeFromCart(item.productId)}
             />
           )}
         />
@@ -109,7 +113,7 @@ const Cart: React.FC = () => {
         {cart.length > 0 && (
           <Button text='Checkout' width={250} height={50} color={'#c3e703'} onPress={checkoutAPI} />
         )}
-       </View>
+      </View>
     </View>
   );
 };
@@ -130,9 +134,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 30
   },
-  address:{
-    borderWidth:1
- },
+  address: {
+    borderWidth: 1
+  },
   body: {
     flex: 5,
     backgroundColor: 'white',
@@ -146,10 +150,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  textPrice:{
-    fontWeight:'bold',
-    color:'red',
-    fontSize:20
+  textPrice: {
+    fontWeight: 'bold',
+    color: 'red',
+    fontSize: 20
   }
 });
 
