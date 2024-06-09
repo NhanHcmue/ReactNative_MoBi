@@ -8,14 +8,18 @@ import Cart from "./screen/payment/Cart";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import StackNavigator from "./Navigation/stackNavigation";
 import { CartProvider } from "./Context/cartContext";
+import DrawNavigator from "./Navigation/drawerNavigation";
+import { Keyboard, TouchableWithoutFeedback } from "react-native";
 
 const App = () => {
   return (
+
   <CartProvider>
       <NavigationContainer>
         <StackNavigator />
       </NavigationContainer>
   </CartProvider>
+ 
   );
 };
 

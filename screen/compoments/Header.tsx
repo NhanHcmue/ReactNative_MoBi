@@ -1,11 +1,11 @@
-import { useNavigation } from "@react-navigation/native";
+import { DrawerActions, useNavigation } from "@react-navigation/native";
 import React from "react"
 import { Image,StyleSheet, View, Text, TextInput, TouchableOpacity } from "react-native";
-
+import { createDrawerNavigator } from '@react-navigation/drawer';
 const Header= ({search,setSearch}) => {
     const navigation=useNavigation();
     const handleNext=()=>{
-        navigation.navigate("Cart");
+        navigation.dispatch(DrawerActions.openDrawer());
     }
     return (
         <View style= {styles.container}> 

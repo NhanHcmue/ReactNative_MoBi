@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, ActivityIndicator, TextInput } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, ActivityIndicator, TextInput, KeyboardAvoidingView } from 'react-native';
 import Button from '../compoments/customButton';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { CartContext } from '../../Context/cartContext';
@@ -87,7 +87,7 @@ const Details: React.FC = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView style={styles.container} behavior="padding">
       <View style={styles.top}>
         <Text style={styles.textTop}>HCMUE SHOP</Text>
         <View style={styles.containerInput}>
@@ -116,7 +116,7 @@ const Details: React.FC = () => {
           <Button text={'Add to cart'} height={50} width={100} color={'#c3e703'} onPress={() => checkInputNumber(number)} />
         </View>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
