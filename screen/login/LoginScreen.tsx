@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { View, Text, StyleSheet, StatusBar, TextInput, TouchableOpacity, Alert, Image } from "react-native";
 import Fontisto from '@expo/vector-icons/Fontisto';
 import { useNavigation } from '@react-navigation/native';
 import { child, get, getDatabase, ref } from "firebase/database";
 import { firebaseapp } from "../../Database/Firebase";
+import { CartContext } from "../../Context/cartContext";
 
 const LoginScreen = () => {
     const navigation = useNavigation();
+    const{setuserID}=useContext(CartContext);
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const checkLogin = async () => {
@@ -16,6 +18,7 @@ const LoginScreen = () => {
             if (snapshot.exists()) {
                 const userData = Object.values(snapshot.val()).find(user => user.username === username);
                 if (userData && userData.password === password) {
+                    setuserID(userData.userID);
                     navigation.navigate("Main");
                 } else {
                     Alert.alert('Inform', 'Username or password was wrong');

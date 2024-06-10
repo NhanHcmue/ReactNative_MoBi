@@ -10,21 +10,27 @@ interface Product {
 
 interface CartContextType {
   cart: Product[];
+  userID: string | null;
   addToCart: (product: Product) => void;
   removeFromCart: (productId: string) => void;
   clearCart: () => void;
+  setuserID:(id:string)=>void;
+  clearUserID: () => void;
 }
 
 export const CartContext = createContext<CartContextType>({
   cart: [],
+  userID:null,
   addToCart: () => {},
   removeFromCart: () => {},
-  clearCart: () => {}
+  clearCart: () => {},
+  setuserID:()=>{},
+  clearUserID: () =>{}
 });
 
 export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [cart, setCart] = useState<Product[]>([]);
-
+  const [userID, setUserID] = useState<string | null>(null);
   const addToCart = (product: Product) => {
     const existingItemIndex = cart.findIndex(item => item.productId === product.productId);
     if (existingItemIndex !== -1) {
@@ -41,8 +47,14 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const clearCart = () => {
     setCart([]);
   };
+  const setuserID=(id:string)=>{
+    setUserID(id);
+  }
+  const clearUserID = () => {
+    setUserID(null);
+  };
   return (
-    <CartContext.Provider value={{ cart, addToCart,removeFromCart,clearCart }}>
+    <CartContext.Provider value={{ cart,userID, addToCart,removeFromCart,clearCart,setuserID,clearUserID }}>
       {children}
     </CartContext.Provider>
   );

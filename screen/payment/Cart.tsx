@@ -18,7 +18,9 @@ type User = {
 const Cart: React.FC = () => {
   const navigation = useNavigation();
   const [user, setUser] = useState<User | null>(null);
-  const { cart, removeFromCart } = useContext(CartContext);
+  const { cart, removeFromCart,userID } = useContext(CartContext);
+  const [newID, setNewID]=useState<number>(1);
+  const userIdString = typeof userID === 'object' ? userID.toString() : userID;
 
   const handleSwitchDelivery = () => {
     navigation.navigate('Address');
@@ -27,26 +29,35 @@ const Cart: React.FC = () => {
     try {
       const dbRef = ref(database, 'orderId');
       const snapshot = await get(dbRef);
-      let newId = 1;
+      let currentID=newID;
       if (snapshot.exists()) {
-        newId = snapshot.val() + 1;
+        currentID = snapshot.val() + 1;
       }
-
-      const ordersRef = ref(database, `Carts/${newId}`);
+      const ordersRef = ref(database, `Carts/${newID}`);
       const totalAmount = calculateTotal();
       const products = cart.map(item => ({ productId: item.productId, count: item.count }));
       const orderData = {
+        UserID: userID,
         Name: user?.name,
         Address: user?.address,
         Products: products,
         Total: totalAmount,
-        id: newId
+        id: newID
       };
-
+  
       await set(ordersRef, orderData);
-      await update(dbRef, { 'id': newId });
-
+      await update(dbRef, { 'id': newID });
+      // lưu giỏ hàng vào bảng User trên firebase
+      if(userID){
+        const addtoUser=ref(database,`User/${userID}/orders/${newID}`);
+        await set(addtoUser,{
+          Products: products,
+          Total: totalAmount,
+          OrderDate: new Date().toISOString()
+        })
+      }
       navigation.navigate('Confirm', { total: formattedTotal, products: cart });
+      setNewID(newID + 1);
     } catch (error) {
       console.warn(error);
       Alert.alert('Failed');
