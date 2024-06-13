@@ -43,7 +43,7 @@ const LoginScreen = () => {
                 <Text style={styles.title}>Login</Text>
             </View>
             <View style={styles.diss}>
-                <Text style={{ fontSize: 20 }}>By singing in you are agreeing</Text>
+                <Text style={{ fontSize: 20 }}>By signing in you are agreeing</Text>
                 <View style={{ flexDirection: 'row', alignContent: 'center' }}>
                     <Text style={{ fontSize: 20 }}>our </Text>
                     <TouchableOpacity><Text style={{ fontSize: 20, color: '#00feff' }}>Term and privacy policy</Text></TouchableOpacity>
