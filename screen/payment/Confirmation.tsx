@@ -34,7 +34,7 @@ const Confirmation: React.FC = () => {
   },[])
   const handleMain=async()=>{
     try {
-      await AsyncStorage.removeItem('user');
+      await AsyncStorage.removeItem('user')
       clearCart();
       navigation.navigate('Home');
     } catch (error) {

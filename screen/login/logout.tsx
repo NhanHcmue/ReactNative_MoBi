@@ -2,12 +2,13 @@ import React, { useContext } from 'react';
 import { useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { CartContext } from '../../Context/cartContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LogoutScreen = () => {
   const navigation = useNavigation();
   const {clearUserID}=useContext(CartContext);
   useEffect(() => {
-    const handleLogout = () => {
+    const handleLogout =() => {;
       clearUserID();
       navigation.reset({
         index: 0,

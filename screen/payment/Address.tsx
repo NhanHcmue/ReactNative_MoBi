@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TextInput } from 'react-native'
+import { View, Text, StyleSheet, TextInput, TouchableWithoutFeedback, Keyboard } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Input from '../compoments/customTextinput'
 import Button from '../compoments/customButton'
@@ -35,6 +35,7 @@ const Address = () => {
     };
    
   return (
+  <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
     <View style={styles.container}>
         <View style={styles.top}>
           <Text style={styles.textTop}>Infomation</Text>
@@ -59,6 +60,7 @@ const Address = () => {
           </View>
         </View>
     </View>
+  </TouchableWithoutFeedback>
   )
 }
 const styles=StyleSheet.create({

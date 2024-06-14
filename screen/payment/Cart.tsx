@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, Alert } from 'react-native';
 import Button from '../compoments/customButton';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CartProduct from '../compoments/customCart';
 import { CartContext } from '../../Context/cartContext';
@@ -64,19 +64,21 @@ const Cart: React.FC = () => {
     }
   };
   // get user's data from asyncStorage
-  useEffect(() => {
-    const getUser = async () => {
-      try {
-        const userInfo = await AsyncStorage.getItem('user');
-        if (userInfo) {
-          setUser(JSON.parse(userInfo));
+  useFocusEffect(
+    React.useCallback(() => {
+      const getUser = async () => {
+        try {
+          const userInfo = await AsyncStorage.getItem('user');
+          if (userInfo) {
+            setUser(JSON.parse(userInfo));
+          }
+        } catch (e) {
+          console.warn(e);
         }
-      } catch (e) {
-        console.warn(e);
-      }
-    };
-    getUser();
-  }, []);
+      };
+      getUser();
+    }, [])
+  );
   
   const calculateTotal = () => {
     return cart.reduce((total, item) => total + (item.price * item.count), 0);

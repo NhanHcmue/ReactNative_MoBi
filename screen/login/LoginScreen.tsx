@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { View, Text, StyleSheet, StatusBar, TextInput, TouchableOpacity, Alert, Image } from "react-native";
+import { View, Text, StyleSheet, StatusBar, TextInput, TouchableOpacity, Alert, Image, TouchableWithoutFeedback, Keyboard } from "react-native";
 import Fontisto from '@expo/vector-icons/Fontisto';
 import { useNavigation } from '@react-navigation/native';
 import { child, get, getDatabase, ref } from "firebase/database";
@@ -37,13 +37,14 @@ const LoginScreen = () => {
     }
 
     return (
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
             <StatusBar />
             <View style={{ alignItems: 'center' }}>
                 <Text style={styles.title}>Login</Text>
             </View>
             <View style={styles.diss}>
-                <Text style={{ fontSize: 20 }}>By singing in you are agreeing</Text>
+                <Text style={{ fontSize: 20 }}>By signing in you are agreeing</Text>
                 <View style={{ flexDirection: 'row', alignContent: 'center' }}>
                     <Text style={{ fontSize: 20 }}>our </Text>
                     <TouchableOpacity><Text style={{ fontSize: 20, color: '#00feff' }}>Term and privacy policy</Text></TouchableOpacity>
@@ -60,9 +61,12 @@ const LoginScreen = () => {
                 </View>
             </View>
             <View>
-                <TouchableOpacity style={{ paddingHorizontal: 25 }} onPress={handleNext}><Text style={styles.conphom}>Login</Text></TouchableOpacity>
+                <TouchableOpacity style={{ paddingHorizontal: 25 }} onPress={handleNext}>
+                    <Text style={styles.conphom}>Login</Text>
+                </TouchableOpacity>
             </View>
         </View>
+    </TouchableWithoutFeedback>
     )
 }
 
